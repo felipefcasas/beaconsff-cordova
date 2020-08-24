@@ -21,7 +21,7 @@ public class Beaconsff extends CordovaPlugin {
     @Override
     public void initialize(CordovaInterface cordova, CordovaWebView webView) {
         super.initialize(cordova, webView);
-        Beaconsff.context = this.cordova.getActivity().getApplicationContext();
+        Beaconsff.context = this.cordova.getActivity().getBaseContext();
     }
 
     @Override

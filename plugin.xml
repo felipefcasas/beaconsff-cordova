@@ -54,15 +54,15 @@
 				<meta-data android:name="longScanForcingEnabled" android:value="true"/>
 			</service>
 
-			<receiver android:enabled="true" android:name="cordova.plugin.beaconsff.StartReceiver">
+			<!-- <receiver android:enabled="true" android:name="cordova.plugin.beaconsff.StartReceiver">
 				<intent-filter>
 					<action android:name="android.intent.action.BOOT_COMPLETED"/>
 				</intent-filter>
-			</receiver>
+			</receiver> -->
 		</edit-config>
 
 		<config-file parent="/*" target="AndroidManifest.xml"/>
-		<source-file src="src/android/StartReceiver.java" target-dir="src/cordova/plugin/beaconsff"/>
+		<!-- <source-file src="src/android/StartReceiver.java" target-dir="src/cordova/plugin/beaconsff"/> -->
 		<source-file src="src/android/Beaconsff.java" target-dir="src/cordova/plugin/beaconsff"/>
 		<source-file src="src/android/MonitoringService.java" target-dir="src/cordova/plugin/beaconsff"/>
 
