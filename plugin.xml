@@ -41,10 +41,6 @@
 			<manifest xmlns:tools="http://schemas.android.com/tools" />
 		</edit-config>
 
-		<source-file src="src/android/StartReceiver.java" target-dir="src/cordova/plugin/beaconsff"/>
-		<source-file src="src/android/Beaconsff.java" target-dir="src/cordova/plugin/beaconsff"/>
-		<source-file src="src/android/MonitoringService.java" target-dir="src/cordova/plugin/beaconsff"/>
-
 		<edit-config file="AndroidManifest.xml" target="/manifest/application" mode="merge">
 			<service android:name=".AdvertisementService" android:enabled="true" android:exported="false" android:label="@string/advertisement_service_name">
 			</service>
@@ -62,6 +58,11 @@
 				</intent-filter>
 			</receiver>
 		</edit-config>
+
+		<config-file parent="/*" target="AndroidManifest.xml"/>
+		<source-file src="src/android/StartReceiver.java" target-dir="src/cordova/plugin/beaconsff"/>
+		<source-file src="src/android/Beaconsff.java" target-dir="src/cordova/plugin/beaconsff"/>
+		<source-file src="src/android/MonitoringService.java" target-dir="src/cordova/plugin/beaconsff"/>
 
 	</platform>
 </plugin>
