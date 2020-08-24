@@ -27,6 +27,13 @@ import org.altbeacon.beacon.Region;
 import java.util.ArrayList;
 import java.util.Collection;
 
+import android.content.Context;
+import android.content.DialogInterface;
+import android.content.Intent;
+import android.content.pm.PackageManager;
+import android.os.Build;
+import android.os.Bundle;
+
 public class MonitoringService extends Service  implements BeaconConsumer  {
 
     protected static final String TAG = "MonitoringService";
