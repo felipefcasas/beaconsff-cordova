@@ -5,17 +5,13 @@ import org.apache.cordova.CallbackContext;
 import org.apache.cordova.CordovaInterface;
 import org.apache.cordova.CordovaWebView;
 
-import java.util.ArrayList;
-import java.util.Date;
-
-import org.apache.cordova.PluginResult;
-
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
 import android.content.Context;
-import android.os.Handler;
+import android.content.Intent;
+
 import android.util.Log;
 
 public class Beaconsff extends CordovaPlugin {

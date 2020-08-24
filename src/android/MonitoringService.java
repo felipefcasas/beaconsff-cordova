@@ -1,13 +1,7 @@
 package cordova.plugin.beaconsff;
 
-import android.app.Notification;
-import android.app.NotificationChannel;
-import android.app.NotificationManager;
-import android.app.PendingIntent;
 import android.app.Service;
-import android.content.Context;
 import android.content.Intent;
-import android.os.Build;
 import android.os.IBinder;
 import android.os.PowerManager;
 import android.os.RemoteException;
@@ -20,19 +14,11 @@ import org.altbeacon.beacon.BeaconConsumer;
 import org.altbeacon.beacon.BeaconManager;
 import org.altbeacon.beacon.BeaconParser;
 import org.altbeacon.beacon.Identifier;
-import org.altbeacon.beacon.MonitorNotifier;
 import org.altbeacon.beacon.RangeNotifier;
 import org.altbeacon.beacon.Region;
 
 import java.util.ArrayList;
 import java.util.Collection;
-
-import android.content.Context;
-import android.content.DialogInterface;
-import android.content.Intent;
-import android.content.pm.PackageManager;
-import android.os.Build;
-import android.os.Bundle;
 
 public class MonitoringService extends Service  implements BeaconConsumer  {
 
