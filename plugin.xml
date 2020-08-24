@@ -28,11 +28,16 @@
 			<uses-permission android:name="android.permission.RECEIVE_BOOT_COMPLETED"/>
 		</edit-config>
 
+		<resource-file src="strings.xml" target="res/values/strings" mode="merge">
+			<string name="advertisement_service_name">Advertisement Service</string>
+    		<string name="monitoring_service_name">Monitor Service</string>
+		</resource-file>
+
 		<edit-config file="AndroidManifest.xml" target="/manifest/application" mode="merge">
-			<service android:name=".AdvertisementService" android:enabled="true" android:exported="false" android:icon="@drawable/ic_launcher_background" android:label="@string/advertisement_service_name">
+			<service android:name=".AdvertisementService" android:enabled="true" android:exported="false" android:icon="@drawable/mipmap-hdpi/ic_launcher" android:label="@string/advertisement_service_name">
 			</service>
 
-			<service android:name=".MonitoringService" android:enabled="true" android:exported="false" android:icon="@drawable/ic_launcher_background" android:label="@string/monitoring_service_name">
+			<service android:name=".MonitoringService" android:enabled="true" android:exported="false" android:icon="@drawable/mipmap-hdpi/ic_launcher" android:label="@string/monitoring_service_name">
 			</service>
 
 			<!--<service android:name="org.altbeacon.beacon.service.BeaconService" tools:node="replace">
