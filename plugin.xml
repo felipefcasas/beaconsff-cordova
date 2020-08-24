@@ -35,6 +35,10 @@
 			<uses-permission android:name="android.permission.RECEIVE_BOOT_COMPLETED"/>
 		</edit-config>
 
+		<edit-config file="AndroidManifest.xml" target="/manifest" mode="merge">
+			<manifest xmlns:tools="http://schemas.android.com/tools" />
+		</edit-config>
+
 		<source-file src="src/android/StartReceiver.java" target-dir="src/cordova/plugin/beaconsff"/>
 		<source-file src="src/android/Beaconsff.java" target-dir="src/cordova/plugin/beaconsff"/>
 		<source-file src="src/android/MonitoringService.java" target-dir="src/cordova/plugin/beaconsff"/>
