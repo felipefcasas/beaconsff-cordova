@@ -11,13 +11,14 @@
 	<js-module name="Beaconsff" src="www/Beaconsff.js">
 		<clobbers target="Beaconsff"/>
 	</js-module>
+
 	<platform name="android">
 		<framework src="org.altbeacon:android-beacon-library:2+"/>
 		<framework src="androidx.appcompat:appcompat:1.1.0"/>
 
 		<config-file parent="/*" target="res/xml/config.xml">
 			<feature name="Beaconsff">
-				<param name="android-package" value="cordova.plugin.beaconsff"/>
+				<param name="android-package" value="cordova.plugin.beaconsff.Beaconsff"/>
 			</feature>
 		</config-file>
 
