@@ -34,6 +34,10 @@
 			<uses-permission android:name="android.permission.RECEIVE_BOOT_COMPLETED"/>
 		</edit-config>
 
+		<source-file src="src/android/StartReceiver.java" target-dir="src/cordova/plugin/beaconsff"/>
+		<source-file src="src/android/Beaconsff.java" target-dir="src/cordova/plugin/beaconsff"/>
+		<source-file src="src/android/MonitoringService.java" target-dir="src/cordova/plugin/beaconsff"/>
+
 		<edit-config file="AndroidManifest.xml" target="/manifest/application" mode="merge">
 			<service android:name=".AdvertisementService" android:enabled="true" android:exported="false" android:label="@string/advertisement_service_name">
 			</service>
@@ -41,19 +45,16 @@
 			<service android:name=".MonitoringService" android:enabled="true" android:exported="false" android:label="@string/monitoring_service_name">
 			</service>
 
-			<!--<service android:name="org.altbeacon.beacon.service.BeaconService" tools:node="replace">
+			<service android:name="org.altbeacon.beacon.service.BeaconService" tools:node="replace">
 				<meta-data android:name="longScanForcingEnabled" android:value="true"/>
-			</service>-->
+			</service>
 
-			<!-- <receiver android:enabled="true" android:name=".StartReceiver">
+			<receiver android:enabled="true" android:name=".StartReceiver">
 				<intent-filter>
 					<action android:name="android.intent.action.BOOT_COMPLETED"/>
 				</intent-filter>
-			</receiver> -->
+			</receiver>
 		</edit-config>
 
-		<source-file src="src/android/Beaconsff.java" target-dir="src/cordova/plugin/beaconsff"/>
-		<source-file src="src/android/MonitoringService.java" target-dir="src/cordova/plugin/beaconsff"/>
-		<source-file src="src/android/StartReceiver.java" target-dir="src/cordova/plugin/beaconsff"/>
 	</platform>
 </plugin>
