@@ -12,6 +12,7 @@
 	</js-module>
 	<platform name="android">
 		<framework src="org.altbeacon:android-beacon-library:2+"/>
+		<framework src="androidx.appcompat:appcompat:1.1.0"/>
 
 		<config-file parent="/*" target="res/xml/config.xml">
 			<feature name="Beaconsff">
