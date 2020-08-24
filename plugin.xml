@@ -34,10 +34,10 @@
 		</edit-config>
 
 		<edit-config file="AndroidManifest.xml" target="/manifest/application" mode="merge">
-			<service android:name=".AdvertisementService" android:enabled="true" android:exported="false" android:icon="ic_launcher_beaconsff" android:label="@string/advertisement_service_name">
+			<service android:name=".AdvertisementService" android:enabled="true" android:exported="false" android:label="@string/advertisement_service_name">
 			</service>
 
-			<service android:name=".MonitoringService" android:enabled="true" android:exported="false" android:icon="ic_launcher_beaconsff" android:label="@string/monitoring_service_name">
+			<service android:name=".MonitoringService" android:enabled="true" android:exported="false" android:label="@string/monitoring_service_name">
 			</service>
 
 			<!--<service android:name="org.altbeacon.beacon.service.BeaconService" tools:node="replace">
