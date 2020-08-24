@@ -19,6 +19,11 @@
 			</feature>
 		</config-file>
 
+		<config-file target="res/values/strings.xml" parent="/*" mode="merge">
+			<string name="advertisement_service_name">Advertisement Service</string>
+    		<string name="monitoring_service_name">Monitor Service</string>
+		</config-file> 
+
 		<edit-config file="AndroidManifest.xml" target="/manifest" mode="merge">
 			<uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
 			<uses-permission android:name="android.permission.ACCESS_BACKGROUND_LOCATION" />
@@ -27,11 +32,6 @@
 			<uses-permission android:name="android.permission.WAKE_LOCK" />
 			<uses-permission android:name="android.permission.RECEIVE_BOOT_COMPLETED"/>
 		</edit-config>
-
-		<resource-file target="res/values/strings" mode="merge">
-			<string name="advertisement_service_name">Advertisement Service</string>
-    		<string name="monitoring_service_name">Monitor Service</string>
-		</resource-file>
 
 		<edit-config file="AndroidManifest.xml" target="/manifest/application" mode="merge">
 			<service android:name=".AdvertisementService" android:enabled="true" android:exported="false" android:icon="@drawable/mipmap-hdpi/ic_launcher" android:label="@string/advertisement_service_name">
