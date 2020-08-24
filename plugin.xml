@@ -1,7 +1,8 @@
-<?xml version='1.0' encoding='utf-8'?>
+<?xml version='1.0'  encoding='utf-8'?>
 <plugin id="cordova-plugin-beaconsff" version="1.0.11"
 	xmlns="http://apache.org/cordova/ns/plugins/1.0"
-	xmlns:android="http://schemas.android.com/apk/res/android">
+	xmlns:android="http://schemas.android.com/apk/res/android"
+	xmlns:tools="http://schemas.android.com/tools">
 	<name>Beaconsff</name>
 	<engines>
 		<engine name="cordova" version=">=5.0.0"/>
