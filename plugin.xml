@@ -13,7 +13,6 @@
 	<platform name="android">
 		<framework src="org.altbeacon:android-beacon-library:2+"/>
 		<framework src="androidx.appcompat:appcompat:1.1.0"/>
-		<framework src="com.android.support:supportv4:27.+"/>
 
 		<config-file parent="/*" target="res/xml/config.xml">
 			<feature name="Beaconsff">
@@ -46,11 +45,11 @@
 				<meta-data android:name="longScanForcingEnabled" android:value="true"/>
 			</service>-->
 
-			<receiver android:enabled="true" android:name=".StartReceiver">
+			<!-- <receiver android:enabled="true" android:name=".StartReceiver">
 				<intent-filter>
 					<action android:name="android.intent.action.BOOT_COMPLETED"/>
 				</intent-filter>
-			</receiver>
+			</receiver> -->
 		</edit-config>
 
 		<source-file src="src/android/Beaconsff.java" target-dir="src/cordova/plugin/beaconsff"/>
