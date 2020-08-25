@@ -22,6 +22,8 @@ public class AdvertisementService extends Service {
     public static boolean STARTED = false;
     protected static final String TAG = "AdvertisementService";
 
+    public static BeaconTransmitter TRANSMITTER = null;
+
     @Nullable
     @Override
     public IBinder onBind(Intent intent) {
@@ -38,6 +40,8 @@ public class AdvertisementService extends Service {
 
         String uuid = intent.getStringExtra("uuid");
 
+        Log.i(TAG, "UUID ADVR: " + uuid);
+
         Beacon beacon = new Beacon.Builder()
                 .setId1(uuid)
                 .setId2("14")
@@ -49,17 +53,18 @@ public class AdvertisementService extends Service {
 
                 BeaconParser beaconParser = new BeaconParser().setBeaconLayout(MonitoringService.iBeaconsLayout);
 
-                BeaconTransmitter beaconTransmitter = new BeaconTransmitter(getApplicationContext(), beaconParser);
-                beaconTransmitter.startAdvertising(beacon, new AdvertiseCallback() {
+                AdvertisementService.TRANSMITTER = new BeaconTransmitter(getApplicationContext(), beaconParser);
+                AdvertisementService.TRANSMITTER.stopAdvertising();
+                AdvertisementService.TRANSMITTER.startAdvertising(beacon, new AdvertiseCallback() {
 
                     @Override
                     public void onStartFailure(int errorCode) {
-                        Log.e(TAG, "Advertisement start failed with code: "+errorCode);
+                        Log.e(TAG, "No ha sido posible transmitir el Beacon: " + errorCode);
                     }
 
                     @Override
                     public void onStartSuccess(AdvertiseSettings settingsInEffect) {
-                        Log.i(TAG, "Advertisement start succeeded.");
+                        Log.i(TAG, "Transmitiendo como Beacon.");
                     }
                 });
 
@@ -71,9 +76,13 @@ public class AdvertisementService extends Service {
 
     @Override
     public void onDestroy() {
-        Log.d(TAG, "DESTROYING 1");
         super.onDestroy();
+
+        if(AdvertisementService.TRANSMITTER != null) {
+            AdvertisementService.TRANSMITTER.stopAdvertising();
+            AdvertisementService.TRANSMITTER = null;
+        }
+
         AdvertisementService.STARTED = false;
-        Log.d(TAG, "DESTROYING 2");
     }
 }

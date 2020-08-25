@@ -133,12 +133,10 @@ public class MonitoringService extends Service  implements BeaconConsumer  {
 
     @Override
     public void onDestroy() {
-        Log.d(TAG, "DESTROYING 1");
         super.onDestroy();
         beaconManager.removeAllMonitorNotifiers();
         beaconManager.unbind(this);
         stopForeground(true);
         MonitoringService.STARTED = false;
-        Log.d(TAG, "DESTROYING 2");
     }
 }
