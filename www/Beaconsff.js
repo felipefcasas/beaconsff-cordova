@@ -2,19 +2,19 @@ var exec = require('cordova/exec');
 
 module.exports = {
 	startMonitoring: function(params, success, error) {
-		exec(success, error, 'Beaconsff', 'startMonitoring', [params]);
+		exec(success, error, 'Beaconsff', 'startMonitoring', []);
 	},
 
 	stopMonitoring: function(success, error) {
 		exec(success, error, 'Beaconsff', 'stopMonitoring', []);
 	},
 
-	startAdvertisiment: function(params, success, error) {
-		exec(success, error, 'Beaconsff', 'startAdvertisiment', [params]);
+	startAdvertising: function(params, success, error) {
+		exec(success, error, 'Beaconsff', 'startAdvertising', [params]);
 	},
 
-	stopAdvertisiment: function(params, success, error) {
-		exec(success, error, 'Beaconsff', 'stopAdvertisiment', [params]);
+	stopAdvertising: function(params, success, error) {
+		exec(success, error, 'Beaconsff', 'stopAdvertising', []);
 	},
 
 	requestPermissions: function(success, error) {

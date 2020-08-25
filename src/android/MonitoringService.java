@@ -1,7 +1,13 @@
 package cordova.plugin.beaconsff;
 
+import android.app.Notification;
+import android.app.NotificationChannel;
+import android.app.NotificationManager;
+import android.app.PendingIntent;
 import android.app.Service;
+import android.content.Context;
 import android.content.Intent;
+import android.os.Build;
 import android.os.IBinder;
 import android.os.PowerManager;
 import android.os.RemoteException;
@@ -20,6 +26,8 @@ import org.altbeacon.beacon.Region;
 import java.util.ArrayList;
 import java.util.Collection;
 
+import io.ionic.starter.R;
+
 public class MonitoringService extends Service  implements BeaconConsumer  {
 
     protected static final String TAG = "MonitoringService";
@@ -33,37 +41,44 @@ public class MonitoringService extends Service  implements BeaconConsumer  {
     @Override
     public int onStartCommand(Intent intent, int flags, int startId) {
 
+        // Si el servicio de monitoreo está activo paramos la ejecución del método
         if(MonitoringService.STARTED) {
             return Service.START_STICKY;
         }
 
+        // Si el beaconManager fue inicializado, desenlazamos la instancia actual
         if(beaconManager != null) {
             beaconManager.unbind(this);
         }
 
         beaconManager = BeaconManager.getInstanceForApplication(this);
 
+        // Definimos una región con una lista vacía
+        // con el fin de detectar todos los beacons que estén transmitiendo su señal
         ArrayList<Identifier> identifiers = new ArrayList<Identifier>();
         region = new Region("ALL_BEACONS", identifiers);
 
+        // El escaneo en foreground será cada 5 segundos
         beaconManager.setForegroundBetweenScanPeriod(5000l);
 
-        beaconManager.setBackgroundBetweenScanPeriod(5000l);
-        beaconManager.setBackgroundScanPeriod(5000l);
-
+        // Agregamos los layouts para filtrar el escaneo
+        // de momento usamos el layout de iBeacons
         beaconManager.getBeaconParsers().add(new BeaconParser().setBeaconLayout(MonitoringService.iBeaconsLayout));
 
+        // El escaneo en background será cada 1.1 segundos
         beaconManager.setEnableScheduledScanJobs(false);
         beaconManager.setBackgroundBetweenScanPeriod(0);
         beaconManager.setBackgroundScanPeriod(1100);
 
-        /* Notification.Builder builder = new Notification.Builder(this);
-        builder.setSmallIcon(R.drawable.ic_launcher_background);
-        builder.setContentTitle("Scanning for Beacons");
+        // Creamos una notificación
+        Notification.Builder builder = new Notification.Builder(this);
+        builder.setSmallIcon(R.mipmap.ic_launcher);
+
         PendingIntent pendingIntent = PendingIntent.getActivity(
                 this, 0, intent, PendingIntent.FLAG_UPDATE_CURRENT
         );
 
+        builder.setContentTitle("Scanning for Beacons");
         builder.setContentIntent(pendingIntent);
 
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
@@ -75,7 +90,7 @@ public class MonitoringService extends Service  implements BeaconConsumer  {
             builder.setChannelId(channel.getId());
         }
 
-        beaconManager.enableForegroundServiceScanning(builder.build(), 456);*/
+        beaconManager.enableForegroundServiceScanning(builder.build(), 456);
 
         beaconManager.bind(this);
 
@@ -118,6 +133,12 @@ public class MonitoringService extends Service  implements BeaconConsumer  {
 
     @Override
     public void onDestroy() {
+        Log.d(TAG, "DESTROYING 1");
         super.onDestroy();
+        beaconManager.removeAllMonitorNotifiers();
+        beaconManager.unbind(this);
+        stopForeground(true);
+        MonitoringService.STARTED = false;
+        Log.d(TAG, "DESTROYING 2");
     }
 }
