@@ -39,20 +39,33 @@
 			<uses-permission android:name="android.permission.RECEIVE_BOOT_COMPLETED"/>
 		</edit-config>
 
-		<edit-config file="app/src/main/AndroidManifest.xml" target="/manifest/application" mode="merge">
-			
-			<service android:name="cordova.plugin.beaconsff.AdvertisementService" android:enabled="true" android:exported="false" android:label="@string/advertisement_service_name">
-			</service>
+		<edit-config file="app/src/main/AndroidManifest.xml" target="/manifest" mode="merge">
+			<manifest xmlns:tools="http://schemas.android.com/tools" />
+		</edit-config>
 
-			<service android:name="cordova.plugin.beaconsff.MonitoringService" android:enabled="true" android:exported="false" android:label="@string/monitoring_service_name">
-				<meta-data android:name="longScanForcingEnabled" android:value="true"/>
-			</service>
+		<edit-config file="app/src/main/AndroidManifest.xml" target="/manifest/application" mode="merge"
+			xmlns:android="http://schemas.android.com/apk/res/android">
 
-			<receiver android:enabled="true" android:name="cordova.plugin.beaconsff.StartReceiver">
-				<intent-filter>
-					<action android:name="android.intent.action.BOOT_COMPLETED"/>
-				</intent-filter>
-			</receiver>
+			<application>
+
+				<service android:name="cordova.plugin.beaconsff.AdvertisementService" android:enabled="true" android:exported="false" android:label="@string/advertisement_service_name">
+				</service>
+
+				<service android:name="cordova.plugin.beaconsff.MonitoringService" android:enabled="true" android:exported="false" android:label="@string/monitoring_service_name">
+					<meta-data android:name="longScanForcingEnabled" android:value="true"/>
+				</service>
+
+				<service android:name="org.altbeacon.beacon.service.BeaconService" tools:node="replace">
+					<meta-data android:name="longScanForcingEnabled" android:value="true"/>
+				</service>
+
+				<receiver android:enabled="true" android:name="cordova.plugin.beaconsff.StartReceiver">
+					<intent-filter>
+						<action android:name="android.intent.action.BOOT_COMPLETED"/>
+					</intent-filter>
+				</receiver>
+
+			</application>
 		</edit-config>
 
 		<source-file src="src/android/StartReceiver.java" target-dir="src/cordova/plugin/beaconsff"/>
