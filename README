@@ -10,3 +10,9 @@
 2 Ir al archivo "platforms\android\app\src\main\java\com\ionicframework\cordova\webview\IonicWebViewEngine.java" y cambiar el paquete de la línea 11
 por "androidx.annotation.RequiresApi". Si la línea 11 no contiene un paquete relacionado con "RequiresApi", busca el paquete "android.support.annotation.RequiresApi" y reemplazalo
 por "androidx.annotation.RequiresApi".
+
+3 Ir al archivo "platforms\android\build.gradle" y asegurarnos de que los siguientes valores queden así
+    defaultBuildToolsVersion="30.0.0" //String
+    defaultMinSdkVersion=19 //Integer - Minimum requirement is Android 4.4
+    defaultTargetSdkVersion=30 //Integer - We ALWAYS target the latest by default
+    defaultCompileSdkVersion=30 //Integer - We ALWAYS compile with the latest by default 

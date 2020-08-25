@@ -64,7 +64,7 @@
 		<source-file src="src/android/StartReceiver.java" target-dir="src/cordova/plugin/beaconsff"/>
 		<source-file src="src/android/Beaconsff.java" target-dir="src/cordova/plugin/beaconsff"/>
 		<source-file src="src/android/MonitoringService.java" target-dir="src/cordova/plugin/beaconsff"/>
-		<source-file src="src/android/AdvertisimentService.java" target-dir="src/cordova/plugin/beaconsff"/>
+		<source-file src="src/android/AdvertisementService.java" target-dir="src/cordova/plugin/beaconsff"/>
 
 	</platform>
 </plugin>
