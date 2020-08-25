@@ -14,15 +14,6 @@
 		<clobbers target="Beaconsff"/>
 	</js-module>
 
-	<edit-config file="app/src/main/AndroidManifest.xml" target="/manifest" mode="merge">
-			<uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
-			<uses-permission android:name="android.permission.ACCESS_BACKGROUND_LOCATION" />
-			<uses-permission android:name="android.permission.FOREGROUND_SERVICE" />
-			<uses-permission android:name="android.permission.INTERNET" />
-			<uses-permission android:name="android.permission.WAKE_LOCK" />
-			<uses-permission android:name="android.permission.RECEIVE_BOOT_COMPLETED"/>
-	</edit-config>
-
 
 	<platform name="android">
 		<framework src="org.altbeacon:android-beacon-library:2+"/>
@@ -40,14 +31,14 @@
 			<string name="monitoring_service_name">Monitor Service</string>
 		</config-file>
 
-		<edit-config file="app/src/main/AndroidManifest.xml" target="/manifest" mode="merge">
+		<config-file file="app/src/main/AndroidManifest.xml" target="/manifest" mode="merge">
 				<uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
 				<uses-permission android:name="android.permission.ACCESS_BACKGROUND_LOCATION" />
 				<uses-permission android:name="android.permission.FOREGROUND_SERVICE" />
 				<uses-permission android:name="android.permission.INTERNET" />
 				<uses-permission android:name="android.permission.WAKE_LOCK" />
 				<uses-permission android:name="android.permission.RECEIVE_BOOT_COMPLETED"/>
-		</edit-config>
+		</config-file>
 
 
 
