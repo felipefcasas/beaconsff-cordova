@@ -31,19 +31,18 @@
 			<string name="monitoring_service_name">Monitor Service</string>
 		</config-file>
 
-		<config-file file="app/src/main/AndroidManifest.xml" target="/manifest" mode="merge">
-				<uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
-				<uses-permission android:name="android.permission.ACCESS_BACKGROUND_LOCATION" />
-				<uses-permission android:name="android.permission.FOREGROUND_SERVICE" />
-				<uses-permission android:name="android.permission.INTERNET" />
-				<uses-permission android:name="android.permission.WAKE_LOCK" />
-				<uses-permission android:name="android.permission.RECEIVE_BOOT_COMPLETED"/>
+		<config-file target="app/src/main/AndroidManifest.xml" parent="/manifest" mode="merge">
+			<uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
+			<uses-permission android:name="android.permission.ACCESS_BACKGROUND_LOCATION" />
+			<uses-permission android:name="android.permission.FOREGROUND_SERVICE" />
+			<uses-permission android:name="android.permission.INTERNET" />
+			<uses-permission android:name="android.permission.WAKE_LOCK" />
+			<uses-permission android:name="android.permission.RECEIVE_BOOT_COMPLETED"/>
 		</config-file>
 
 
 
-		<!-- <edit-config file="app/src/main/AndroidManifest.xml" target="/manifest/application" mode="merge"
-			xmlns:android="http://schemas.android.com/apk/res/android">
+		<!-- <edit-config file="app/src/main/AndroidManifest.xml" target="/manifest/application" mode="merge" xmlns:android="http://schemas.android.com/apk/res/android">
 
 			<application android:networkSecurityConfig="@xml/network_security_config">
 
