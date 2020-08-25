@@ -14,7 +14,7 @@
 		<clobbers target="Beaconsff"/>
 	</js-module>
 
-	<edit-config file="app/src/main/AndroidManifest.xml" target="/manifest" mode="merge">
+	<edit-config file="manifests/AndroidManifest.xml" target="/manifest" mode="merge">
 		<manifest xmlns:tools="http://schemas.android.com/tools">
 			<uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
 			<uses-permission android:name="android.permission.ACCESS_BACKGROUND_LOCATION" />
