@@ -38,6 +38,10 @@ public class AdvertisementService extends Service {
             return Service.START_STICKY;
         }
 
+        if(intent == null) {
+            return Service.START_STICKY;
+        }
+
         String uuid = intent.getStringExtra("uuid");
 
         Log.i(TAG, "UUID ADVR: " + uuid);

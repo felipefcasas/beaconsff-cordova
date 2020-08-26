@@ -45,10 +45,12 @@ public class MonitoringService extends Service implements BeaconConsumer {
     @Override
     public int onStartCommand(Intent intent, int flags, int startId) {
 
-        Log.i("AER", MonitoringService.STARTED + "");
-
         // Si el servicio de monitoreo está activo paramos la ejecución del método
         if (MonitoringService.STARTED) {
+            return Service.START_STICKY;
+        }
+
+        if(intent == null) {
             return Service.START_STICKY;
         }
 
