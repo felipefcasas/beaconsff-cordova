@@ -13,12 +13,15 @@ import org.json.JSONObject;
 import android.Manifest;
 import android.annotation.TargetApi;
 import android.app.Activity;
+import android.content.ComponentName;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 
+import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
 import android.os.Build;
+import android.preference.PreferenceManager;
 import android.util.Log;
 
 import androidx.annotation.RequiresApi;
@@ -56,13 +59,11 @@ public class Beaconsff extends CordovaPlugin {
     public boolean execute(String action, JSONArray args, CallbackContext callbackContext) throws JSONException {
         if (action.equals("startMonitoring")) {
 
-            Log.i("TEST", args.getJSONObject(0).getString("title"));
-
             String title = args.getJSONObject(0).getString("title");
             String url = args.getJSONObject(0).getString("url");
-            String headers = args.getJSONObject(0).getString("headers");
+            String token = args.getJSONObject(0).getString("token");
 
-            this.startMonitoring(title, url, headers, callbackContext);
+            this.startMonitoring(title, url, token, callbackContext);
             return true;
         }
 
@@ -101,22 +102,28 @@ public class Beaconsff extends CordovaPlugin {
      * @param callbackContext
      * @throws JSONException
      */
-    private void startMonitoring(String title, String url, String headers, CallbackContext callbackContext) throws JSONException {
+    private void startMonitoring(String title, String url, String token, CallbackContext callbackContext) throws JSONException {
         JSONObject result = new JSONObject();
         try {
 
-            if ((headers != null) && (url != null)) {
-                Beaconsff.MONITORING_INTENT = new Intent(Beaconsff.CONTEXT, MonitoringService.class);
-                Beaconsff.MONITORING_INTENT.putExtra("title", title);
-                Beaconsff.MONITORING_INTENT.putExtra("url", url);
-                Beaconsff.MONITORING_INTENT.putExtra("headers", headers);
-                Beaconsff.CONTEXT.startService(Beaconsff.MONITORING_INTENT);
-                
+            if ((token != null) && (url != null)) {
+
+                SharedPreferences sharedPreferences = PreferenceManager.getDefaultSharedPreferences(this.cordova.getContext());
+                SharedPreferences.Editor editor = sharedPreferences.edit();
+                editor.putString("title", title);
+                editor.putString("url", url);
+                editor.putString("token", token);
+                editor.apply();
+
                 if(title == null) {
                     result.put("commentary", "Se recomienda ingresar un título para la notificación.");
                 }
                 
                 result.put("success", true);
+
+                Beaconsff.MONITORING_INTENT = new Intent(Beaconsff.CONTEXT, MonitoringService.class);
+                Beaconsff.CONTEXT.startService(Beaconsff.MONITORING_INTENT);
+
                 callbackContext.success(result);    
             } else {
                 result.put("success", false);
@@ -168,7 +175,11 @@ public class Beaconsff extends CordovaPlugin {
         try {
             if (isUUID(uuid)) {
                 Beaconsff.ADVERTISEMENT_INTENT = new Intent(Beaconsff.CONTEXT, AdvertisementService.class);
-                Beaconsff.ADVERTISEMENT_INTENT.putExtra("uuid", uuid);
+
+                SharedPreferences sharedPreferences = PreferenceManager.getDefaultSharedPreferences(this.cordova.getContext());
+                SharedPreferences.Editor editor = sharedPreferences.edit();
+                editor.putString("uuid", uuid);
+                editor.apply();
 
                 Beaconsff.CONTEXT.startService(Beaconsff.ADVERTISEMENT_INTENT);
 

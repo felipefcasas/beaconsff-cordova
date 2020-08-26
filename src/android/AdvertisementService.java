@@ -4,8 +4,10 @@ import android.app.Service;
 import android.bluetooth.le.AdvertiseCallback;
 import android.bluetooth.le.AdvertiseSettings;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Build;
 import android.os.IBinder;
+import android.preference.PreferenceManager;
 import android.util.Log;
 
 import androidx.annotation.Nullable;
@@ -24,6 +26,8 @@ public class AdvertisementService extends Service {
 
     public static BeaconTransmitter TRANSMITTER = null;
 
+    private String uuid = null;
+
     @Nullable
     @Override
     public IBinder onBind(Intent intent) {
@@ -38,13 +42,8 @@ public class AdvertisementService extends Service {
             return Service.START_STICKY;
         }
 
-        if(intent == null) {
-            return Service.START_STICKY;
-        }
-
-        String uuid = intent.getStringExtra("uuid");
-
-        Log.i(TAG, "UUID ADVR: " + uuid);
+        SharedPreferences sharedPreferences = PreferenceManager.getDefaultSharedPreferences(getApplicationContext());
+        uuid = sharedPreferences.getString("uuid", null);
 
         Beacon beacon = new Beacon.Builder()
                 .setId1(uuid)
