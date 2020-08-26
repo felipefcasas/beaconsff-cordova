@@ -45,15 +45,17 @@ public class MonitoringService extends Service implements BeaconConsumer {
     @Override
     public int onStartCommand(Intent intent, int flags, int startId) {
 
-        String title = intent.getStringExtra("title");
-
-        MonitoringService.API_URL = intent.getStringExtra("url");
-        MonitoringService.HEADERS = intent.getStringExtra("headers");
+        Log.i("AER", MonitoringService.STARTED + "");
 
         // Si el servicio de monitoreo está activo paramos la ejecución del método
         if (MonitoringService.STARTED) {
             return Service.START_STICKY;
         }
+
+        String title = intent.getStringExtra("title");
+
+        MonitoringService.API_URL = intent.getStringExtra("url");
+        MonitoringService.HEADERS = intent.getStringExtra("headers");
 
         // Si el beaconManager fue inicializado, desenlazamos la instancia actual
         if (beaconManager != null) {
@@ -156,5 +158,7 @@ public class MonitoringService extends Service implements BeaconConsumer {
         beaconManager.unbind(this);
         stopForeground(true);
         MonitoringService.STARTED = false;
+        MonitoringService.HEADERS = null;
+        MonitoringService.API_URL = null;
     }
 }

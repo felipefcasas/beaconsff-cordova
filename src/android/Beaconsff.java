@@ -55,9 +55,13 @@ public class Beaconsff extends CordovaPlugin {
     @Override
     public boolean execute(String action, JSONArray args, CallbackContext callbackContext) throws JSONException {
         if (action.equals("startMonitoring")) {
+
+            Log.i("TEST", args.getJSONObject(0).getString("title"));
+
             String title = args.getJSONObject(0).getString("title");
             String url = args.getJSONObject(0).getString("url");
             String headers = args.getJSONObject(0).getString("headers");
+
             this.startMonitoring(title, url, headers, callbackContext);
             return true;
         }

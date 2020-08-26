@@ -2,7 +2,7 @@ var exec = require('cordova/exec');
 
 module.exports = {
 	startMonitoring: function (params, success, error) {
-		exec(success, error, 'Beaconsff', 'startMonitoring', []);
+		exec(success, error, 'Beaconsff', 'startMonitoring', [params]);
 	},
 
 	stopMonitoring: function (success, error) {
