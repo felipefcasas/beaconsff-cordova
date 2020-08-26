@@ -26,28 +26,37 @@ import org.altbeacon.beacon.Region;
 import java.util.ArrayList;
 import java.util.Collection;
 
+import io.ionic.starter.MainActivity;
 import io.ionic.starter.R;
 
-public class MonitoringService extends Service  implements BeaconConsumer  {
+public class MonitoringService extends Service implements BeaconConsumer {
 
     protected static final String TAG = "MonitoringService";
     private BeaconManager beaconManager;
     private Region region;
     private PowerManager.WakeLock wakeLock;
-    private static boolean STARTED = false;
+    public static boolean STARTED = false;
 
     public static final String iBeaconsLayout = "m:2-3=0215,i:4-19,i:20-21,i:22-23,p:24-24";
+
+    private static String API_URL = null;
+    private static String HEADERS = null;
 
     @Override
     public int onStartCommand(Intent intent, int flags, int startId) {
 
+        String title = intent.getStringExtra("title");
+
+        MonitoringService.API_URL = intent.getStringExtra("url");
+        MonitoringService.HEADERS = intent.getStringExtra("headers");
+
         // Si el servicio de monitoreo está activo paramos la ejecución del método
-        if(MonitoringService.STARTED) {
+        if (MonitoringService.STARTED) {
             return Service.START_STICKY;
         }
 
         // Si el beaconManager fue inicializado, desenlazamos la instancia actual
-        if(beaconManager != null) {
+        if (beaconManager != null) {
             beaconManager.unbind(this);
         }
 
@@ -74,17 +83,17 @@ public class MonitoringService extends Service  implements BeaconConsumer  {
         Notification.Builder builder = new Notification.Builder(this);
         builder.setSmallIcon(R.mipmap.ic_launcher);
 
-        PendingIntent pendingIntent = PendingIntent.getActivity(
-                this, 0, intent, PendingIntent.FLAG_UPDATE_CURRENT
-        );
+        Intent appIntent = new Intent(getApplicationContext(), MainActivity.class);
 
-        builder.setContentTitle("Scanning for Beacons");
+        PendingIntent pendingIntent = PendingIntent.getActivity(this, 0, appIntent, PendingIntent.FLAG_UPDATE_CURRENT);
+
+        builder.setContentTitle(title != null ? title : "Beaconsff");
         builder.setContentIntent(pendingIntent);
 
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
-            NotificationChannel channel = new NotificationChannel("My Notification Channel ID",
-                    "My Notification Name", NotificationManager.IMPORTANCE_DEFAULT);
-            channel.setDescription("My Notification Channel Description");
+            NotificationChannel channel = new NotificationChannel("BFF01",
+                    "BFFN", NotificationManager.IMPORTANCE_DEFAULT);
+            channel.setDescription("BFFD");
             NotificationManager notificationManager = (NotificationManager) getSystemService(Context.NOTIFICATION_SERVICE);
             notificationManager.createNotificationChannel(channel);
             builder.setChannelId(channel.getId());
@@ -114,13 +123,22 @@ public class MonitoringService extends Service  implements BeaconConsumer  {
             @Override
             public void didRangeBeaconsInRegion(Collection<Beacon> beacons, Region region) {
                 if (beacons.size() > 0) {
-                    Log.i(TAG, "The first beacon I see is about "+beacons.iterator().next().getDistance()+" meters away.");
-                    Log.i(TAG, "BEACON_NAME "+beacons.iterator().next().getBluetoothName());
-                    Log.i(TAG, "BEACON_UUID "+beacons.iterator().next().getServiceUuid());
-                    Log.i(TAG, "BEACON_RSSI "+beacons.iterator().next().getRssi());
-                    Log.i(TAG, "BEACON_MANUFACTURER "+beacons.iterator().next().getManufacturer());
-                    Log.i(TAG, "BEACON_ID1 "+beacons.iterator().next().getId1().toString());
+
+                    for(Beacon beacon: beacons) {
+                        this.sendRequest(beacon);
+                    }
+
+                    Log.i(TAG, "The first beacon I see is about " + beacons.iterator().next().getDistance() + " meters away.");
+                    Log.i(TAG, "BEACON_NAME " + beacons.iterator().next().getBluetoothName());
+                    Log.i(TAG, "BEACON_UUID " + beacons.iterator().next().getServiceUuid());
+                    Log.i(TAG, "BEACON_RSSI " + beacons.iterator().next().getRssi());
+                    Log.i(TAG, "BEACON_MANUFACTURER " + beacons.iterator().next().getManufacturer());
+                    Log.i(TAG, "BEACON_ID1 " + beacons.iterator().next().getId1().toString());
                 }
+            }
+
+            private void sendRequest(Beacon beacon) {
+
             }
         });
 

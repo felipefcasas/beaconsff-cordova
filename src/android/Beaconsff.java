@@ -21,9 +21,12 @@ import android.content.pm.PackageManager;
 import android.os.Build;
 import android.util.Log;
 
+import androidx.annotation.RequiresApi;
 import androidx.appcompat.app.AlertDialog;
 
 import java.util.UUID;
+
+import io.ionic.starter.MainActivity;
 
 public class Beaconsff extends CordovaPlugin {
 
@@ -52,7 +55,10 @@ public class Beaconsff extends CordovaPlugin {
     @Override
     public boolean execute(String action, JSONArray args, CallbackContext callbackContext) throws JSONException {
         if (action.equals("startMonitoring")) {
-            this.startMonitoring(callbackContext);
+            String title = args.getJSONObject(0).getString("title");
+            String url = args.getJSONObject(0).getString("url");
+            String headers = args.getJSONObject(0).getString("headers");
+            this.startMonitoring(title, url, headers, callbackContext);
             return true;
         }
 
@@ -76,23 +82,43 @@ public class Beaconsff extends CordovaPlugin {
             this.requestPermissions(callbackContext);
             return true;
         }
+
+        if(action.equals("getServiceStatus")) {
+            this.getServiceStatus(callbackContext);
+            return true;
+        }
         return false;
     }
 
     /**
      * Inicia el servicio de monitoreo de Beacons
      *
+     * @param title
      * @param callbackContext
      * @throws JSONException
      */
-    private void startMonitoring(CallbackContext callbackContext) throws JSONException {
+    private void startMonitoring(String title, String url, String headers, CallbackContext callbackContext) throws JSONException {
         JSONObject result = new JSONObject();
         try {
-            Beaconsff.MONITORING_INTENT = new Intent(Beaconsff.CONTEXT, MonitoringService.class);
-            Beaconsff.CONTEXT.startService(Beaconsff.MONITORING_INTENT);
 
-            result.put("success", true);
-            callbackContext.success(result);
+            if ((headers != null) && (url != null)) {
+                Beaconsff.MONITORING_INTENT = new Intent(Beaconsff.CONTEXT, MonitoringService.class);
+                Beaconsff.MONITORING_INTENT.putExtra("title", title);
+                Beaconsff.MONITORING_INTENT.putExtra("url", url);
+                Beaconsff.MONITORING_INTENT.putExtra("headers", headers);
+                Beaconsff.CONTEXT.startService(Beaconsff.MONITORING_INTENT);
+                
+                if(title == null) {
+                    result.put("commentary", "Se recomienda ingresar un título para la notificación.");
+                }
+                
+                result.put("success", true);
+                callbackContext.success(result);    
+            } else {
+                result.put("success", false);
+                result.put("error", "No se especificó url y/o headers.");
+                callbackContext.error(result);
+            }
         } catch (Exception ex) {
             result.put("success", false);
             result.put("error", ex.toString());
@@ -193,63 +219,76 @@ public class Beaconsff extends CordovaPlugin {
 
             Activity cordovaActivity = this.cordova.getActivity();
 
-
             if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+
                 if (cordovaActivity.checkSelfPermission(Manifest.permission.ACCESS_FINE_LOCATION) == PackageManager.PERMISSION_GRANTED) {
                     if (cordovaActivity.checkSelfPermission(Manifest.permission.ACCESS_BACKGROUND_LOCATION) != PackageManager.PERMISSION_GRANTED) {
-                        if (cordovaActivity.shouldShowRequestPermissionRationale(Manifest.permission.ACCESS_BACKGROUND_LOCATION)) {
-                            final AlertDialog.Builder builder = new AlertDialog.Builder(Beaconsff.CONTEXT);
-                            builder.setTitle("This app needs background location access");
-                            builder.setMessage("Please grant location access so this app can detect beacons in the background.");
-                            builder.setPositiveButton(android.R.string.ok, null);
-                            builder.setOnDismissListener(new DialogInterface.OnDismissListener() {
+                        // if (cordovaActivity.shouldShowRequestPermissionRationale(Manifest.permission.ACCESS_BACKGROUND_LOCATION)) {
+                            /*java.lang.reflect.Method method = null;
+                            try {
+                                JSONArray permissionsToRequest = new JSONArray();
+                                permissionsToRequest.put(Manifest.permission.ACCESS_BACKGROUND_LOCATION);
+                                method = cordova.getClass().getMethod("requestPermissions", CordovaPlugin.class ,int.class, String[].class);
+                                method.invoke(cordova, this, PERMISSION_REQUEST_BACKGROUND_LOCATION, permissions);
+                            } catch (NoSuchMethodException e) {
+                                e.printStackTrace();
+                            }*/
 
-                                @TargetApi(23)
-                                @Override
-                                public void onDismiss(DialogInterface dialog) {
-                                    cordovaActivity.requestPermissions(new String[]{Manifest.permission.ACCESS_BACKGROUND_LOCATION}, PERMISSION_REQUEST_BACKGROUND_LOCATION);
-                                }
-
-                            });
-                            builder.show();
-                        } else {
-                            final AlertDialog.Builder builder = new AlertDialog.Builder(Beaconsff.CONTEXT);
-                            builder.setTitle("Functionality limited");
-                            builder.setMessage("Since background location access has not been granted, this app will not be able to discover beacons in the background.  Please go to Settings -> Applications -> Permissions and grant background location access to this app.");
-                            builder.setPositiveButton(android.R.string.ok, null);
-                            builder.setOnDismissListener(new DialogInterface.OnDismissListener() {
-
-                                @Override
-                                public void onDismiss(DialogInterface dialog) {
-                                }
-
-                            });
-                            builder.show();
-                        }
-
-                    }
-                } else {
-                    if (cordovaActivity.shouldShowRequestPermissionRationale(Manifest.permission.ACCESS_FINE_LOCATION)) {
-                        cordovaActivity.requestPermissions(new String[]{Manifest.permission.ACCESS_FINE_LOCATION, Manifest.permission.ACCESS_BACKGROUND_LOCATION}, PERMISSION_REQUEST_FINE_LOCATION);
-                    } else {
-                        final AlertDialog.Builder builder = new AlertDialog.Builder(Beaconsff.CONTEXT);
-                        builder.setTitle("Functionality limited");
-                        builder.setMessage("Since location access has not been granted, this app will not be able to discover beacons.  Please go to Settings -> Applications -> Permissions and grant location access to this app.");
-                        builder.setPositiveButton(android.R.string.ok, null);
-                        builder.setOnDismissListener(new DialogInterface.OnDismissListener() {
-
-                            @Override
-                            public void onDismiss(DialogInterface dialog) {
+                            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.Q) {
+                                cordovaActivity.requestPermissions(new String[]{Manifest.permission.ACCESS_BACKGROUND_LOCATION}, PERMISSION_REQUEST_BACKGROUND_LOCATION);
+                                result.put("success", true);
+                                result.put("message", "Permiso solicitado.");
+                                callbackContext.success(result);
                             }
 
-                        });
-                        builder.show();
+                         /* } else {
+                            result.put("success", false);
+                            result.put("message", "Permiso ACCESS_BACKGROUND_LOCATION denegado persistentemente.");
+                            result.put("code", 1);
+                            callbackContext.error(result);
+                        } */
                     }
+                } else {
+                    // if (cordovaActivity.shouldShowRequestPermissionRationale(Manifest.permission.ACCESS_FINE_LOCATION)) {
 
+                        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.Q) {
+                            cordovaActivity.requestPermissions(new String[]{Manifest.permission.ACCESS_FINE_LOCATION, Manifest.permission.ACCESS_BACKGROUND_LOCATION}, PERMISSION_REQUEST_FINE_LOCATION);
+                        } else {
+                            cordovaActivity.requestPermissions(new String[]{Manifest.permission.ACCESS_FINE_LOCATION}, PERMISSION_REQUEST_FINE_LOCATION);
+                        }
+
+                        result.put("success", true);
+                        result.put("message", "Permisos solicitados.");
+                        callbackContext.success(result);
+                    /* } else {
+                        result.put("success", false);
+                        result.put("message", "Permiso ACCESS_FINE_LOCATION denegado persistentemente.");
+                        result.put("code", 2);
+                        callbackContext.error(result);
+                    } */
                 }
+            } else {
+                result.put("success", false);
+                result.put("message", "No implementado.");
+                result.put("code", 3);
+                callbackContext.error(result);
             }
+        } catch (Exception ex) {
+            result.put("success", false);
+            result.put("error", ex.toString());
+            callbackContext.error(result);
+        }
+    }
 
-
+    /**
+     * Retorna un boolean que indica si el servicio de monitoreo está corriendo o no
+     * @param callbackContext
+     * @throws JSONException
+     */
+    private void getServiceStatus(CallbackContext callbackContext) throws JSONException {
+        JSONObject result = new JSONObject();
+        try {
+            result.put("running", MonitoringService.STARTED);
             result.put("success", true);
             callbackContext.success(result);
         } catch (Exception ex) {

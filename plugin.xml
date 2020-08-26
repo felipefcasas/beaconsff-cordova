@@ -19,6 +19,7 @@
 		<framework src="org.altbeacon:android-beacon-library:2+"/>
 		<framework src="androidx.appcompat:appcompat:1.1.0"/>
 		<framework src="com.android.support:support-v4:+" />
+		<framework src="com.android.volley:volley:1.1.1" />
 
 		<config-file parent="/*" target="res/xml/config.xml">
 			<feature name="Beaconsff">
@@ -48,11 +49,11 @@
 			</service>
 			<service android:enabled="true" android:exported="false" android:label="@string/advertisement_service_name" android:name="cordova.plugin.beaconsff.AdvertisementService">
 			</service>
-			<receiver android:enabled="true" android:name="cordova.plugin.beaconsff.StartReceiver">
+			<!-- <receiver android:enabled="true" android:name="cordova.plugin.beaconsff.StartReceiver">
 				<intent-filter>
 					<action android:name="android.intent.action.BOOT_COMPLETED" />
 				</intent-filter>
-			</receiver>
+			</receiver> -->
 		</config-file>
 
 		<source-file src="src/android/StartReceiver.java" target-dir="src/cordova/plugin/beaconsff"/>
